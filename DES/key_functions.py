@@ -1,14 +1,16 @@
-######################## KEY FUNCTIONS ####################################
+def get_binary(text):
+    binary_text_64 = ''.join('{0:08b}'.format(ord(x), 'b') for x in text)
 
-def get_binary_key():
-    with open('key.txt') as f:
-        plain_key = f.read()
+    str_binary = str(binary_text_64)
 
-    plain_key = plain_key[:8]   # Deve ser no máximo 8 caracteres (64 bits)
+    # Adds null character until has 64bits
+    for _ in range(8-len(text)):
+        str_binary += "00000000"
 
-    binary_key_64 = ''.join('{0:08b}'.format(ord(x), 'b') for x in plain_key)
 
-    return str(binary_key_64)
+    return str_binary
+
+
 
 
 
@@ -22,6 +24,8 @@ def permutate_key(key_64bits):
     # print('\n Permutated Key: ' + key_56bits)
 
     return key_56bits
+
+
 
 
 
@@ -55,9 +59,5 @@ def get_sub_key(key_56bits, number):
     
 
     return key_48bits
-
-
-
-
 
 
