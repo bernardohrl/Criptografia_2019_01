@@ -1,4 +1,4 @@
-from aux import get_polynomn, check_values
+from aux import get_polynomn, check_values, get_coeficient
 
 def add(n1, n2):
     result = ''
@@ -92,7 +92,52 @@ def multiply(n1, n2):
 
 
 def divide(n1, n2):
-    print('Divisão')
+
+    if(int(n2, 2) > int(n1, 2)):
+        print('\n\tBase10')
+        print('\t\tQuociente: 0')
+        print('\t\tResto:     ' + str(int(n1, 2)))
+        print('\n\tBase2')
+        print('\t\tQuociente: 0')
+        print('\t\tResto:     ' + n1)
+        print('\n\tPolinômio')
+        print('\t\tQuociente: 0')
+        print('\t\tResto:     ' + get_polynomn(n1))
+
+    else:
+        coeficient = ['0']*8
+
+        while(n1 >= n2):
+            rest = ''
+
+            index, multiplied = get_coeficient(n1, n2)        # Pega o index para alterar a lista 'coeficient'
+            coeficient[-index-1] = '1'                        # Na matemática o coeficiente é decrescent
+
+
+            # Faz o XOR do dividendo e divisor multiplicado
+            for index_temp, byte in enumerate(n1):
+                bite = int(n1[index_temp] != multiplied[index_temp])
+                rest += str(bite)
+
+            
+            n1 = rest
+
+        # Transforma array 'coeficient' em string
+        coeficient = ''.join(coeficient)  
+
+
+        print('\n\tBase10')
+        print('\t\tQuociente: ' + str(int(coeficient, 2)))
+        print('\t\tResto:     ' + str(int(n1, 2)))
+        print('\n\tBase2')
+        print('\t\tQuociente: ' + coeficient)
+        print('\t\tResto:     ' + n1)
+        print('\n\tPolinômio')
+        print('\t\tQuociente: ' + get_polynomn(coeficient))
+        print('\t\tResto:     ' + get_polynomn(n1))
+
+
+
     return
 
 

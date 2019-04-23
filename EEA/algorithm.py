@@ -27,6 +27,7 @@ def main():
 
 def extented_euclides_algorithm(first, second):
     if second == 0:
+        # Retorna MDC, o qual não será alterado.
         return 1, 0, first
    
     else:
@@ -35,8 +36,12 @@ def extented_euclides_algorithm(first, second):
 
         x , y, mdc = extented_euclides_algorithm(second, rest)
 
+        # Retorna resultado inteiro da divisão
         quociente = first//second
 
+        # Retonr y como first
+        # Retonra resultado como second
+        # Retorna MDC intocadoR
         return y, x-(quociente)*y, mdc
 
 

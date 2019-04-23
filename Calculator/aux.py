@@ -33,6 +33,9 @@ def check_values(n1, n2, operacao):
 def get_polynomn(number):
     result = ''
 
+    if(number == '00000000'):
+        return '0'
+
     for index, bit in enumerate(number):        
         coeficient = (7-index)
 
@@ -47,3 +50,13 @@ def get_polynomn(number):
                 result += (' + x^' + str(coeficient))
         
     return(result)
+
+
+def get_coeficient(dividend, divisor):
+    index_n1 = dividend.find('1')
+    index_n2 = divisor.find('1')
+
+    coeficient = index_n2 - index_n1                            # Calcula a potência necessária para divisor atingir o dividendo
+    multiplied = divisor[coeficient:] + divisor[:coeficient]    # De fato faz a multiplixação por x^potencia
+
+    return coeficient, multiplied
