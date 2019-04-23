@@ -22,7 +22,7 @@ def main():
     n1 = str(dec_to_binary(n1))
     n2 = str(dec_to_binary(n2))
 
-    check_values(n1, n2, operacao)
+    # check_values(n1, n2, operacao)
 
 
     mapping = {
