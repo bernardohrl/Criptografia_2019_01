@@ -1,5 +1,5 @@
-def dec_to_binary(text):
-    binary_string = str(bin(int(text, 10))[2:].zfill(8))
+def dec_to_binary(num):
+    binary_string = str(bin(int(num, 10))[2:].zfill(8))
 
     return binary_string
 
@@ -28,3 +28,22 @@ def check_values(n1, n2, operacao):
     print('\n\nnum1: ' + n1)
     print('num2: ' + n2)
     print('opção: ' + str(operacao))
+
+
+def get_polynomn(number):
+    result = ''
+
+    for index, bit in enumerate(number):        
+        coeficient = (7-index)
+
+        if bit == '1':
+            if result == '':
+                result += ('x^' + str(coeficient))
+            elif coeficient == 1:
+                result += ' + x'
+            elif coeficient == 0:
+                result += ' + 1'
+            else:
+                result += (' + x^' + str(coeficient))
+        
+    return(result)
