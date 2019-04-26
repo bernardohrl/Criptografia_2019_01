@@ -14,21 +14,29 @@ def main():
 
 
 
-    print("\n\nMensagem: ")
-    print("\t '" + plain_text + "'\n")
+    print("\n\nMensagem: ", end='')
+    print("'" + plain_text + "'\n")
 
 
 
     key_56bits = get_56bits_key()
     chiper_text = encrypt(plain_text, key_56bits)
 
-    print("\n\nMensagem Criptograda:")
+    print("\n\nMensagem em Binário:")
     print("\t" + chiper_text + "\n")
 
+    
+    print("\n\nMensagem em ASCII:")
+    
+    ascii_text = int(chiper_text, 2)
+
+    # print(ascii)
+
+    ascii_text = ascii_text.to_bytes((ascii_text.bit_length() + 7) // 8, 'big').decode(encoding = "ISO-8859-1")
+
+    print("\t" + str(ascii_text) + "\n")
 
 
-    print("\nMensagem Decriptografada: ")
-    print("\t X\n")
 
 
 
@@ -54,15 +62,14 @@ def encrypt(plain_text, key_56bits):
     
     # Split into 8 letters block
     plain_text_array = [plain_text[i:i+8] for i in range(0, len(plain_text), 8)]
-
-
+    
+    # print(plain_text_array)
+    chiper_text = ''
     # Shifts for encription
     shifts_qtt = [1, 3, 5, 7, 9, 11, 13, 15, 16, 18, 20, 22, 24, 26, 28, 29]   # Quantidade de Shifts é acumulativa
-    chiper_text = ''
 
 
     for index, block in enumerate(plain_text_array):
-
 
         binary_block = get_binary(block)
         initial_permutated = initial_permutate_message_block(binary_block)
@@ -107,15 +114,14 @@ def encrypt(plain_text, key_56bits):
         
         array = [permutated_text[i:i+8] for i in range(0, len(permutated_text), 8)]
 
-        print(array)
+        # print(array)
 
-        for number in array:
-            chiper_text += chr(int(number, 2))
-            print(chr(int(number, 2)))
+        chiper_block = ''.join(array)
+        chiper_text +=chiper_block 
     
+
+
     return chiper_text
-
-
 
 
 main()
