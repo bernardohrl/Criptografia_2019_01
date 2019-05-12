@@ -54,6 +54,33 @@ s_box = [
             0x21, 0x0c, 0x7d]
 
 
+# Format to a propper list
+def state_matrix(state):
+        new_state = []
+        split = re.findall('.' * 2, state)
+        for x in range(4):
+            new_state.append(split[0:4][x]); new_state.append(split[4:8][x])
+            new_state.append(split[8:12][x]); new_state.append(split[12:16][x])
+        return new_state
+
+
+# Expands Key
+def expand_key(key):
+    with open('key.txt') as f:
+        plain_key = f.read()
+
+    temp = ['%08x' % int(x, 16) for x in re.findall('.' * 8, key)]
+
+    sub_word = sbox[(byte >> 24 & 0xff)] << 24) + (sbox[(byte >> 16 & 0xff)] << 16) + (sbox[(byte >> 8 & 0xff)] << 8) + sbox[byte & 0xff])
+
+    setted_key = '%08x' % (sub_word  << 24))
+
+    expanded_key = [state_matrix(''.join(w[x:x + 4])) for x in range(0, len(w))]
+
+    return expand_key
+
+
+
 def main():
 
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -62,7 +89,13 @@ def main():
     print('Digite a mensagem (em hexa): ', end="")
     plain_text = '0123456789abcdeffedcba9876543210'
 
+    key = 
+
 
 
     print("\n\nMensagem: ", end='')
     print("'" + plain_text + "'\n")
+
+
+    expanded_key = expand_key(key)
+    print(expanded_key)
