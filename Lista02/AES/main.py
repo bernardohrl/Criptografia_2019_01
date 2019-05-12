@@ -87,9 +87,29 @@ def xor(first, last):
         return ''.join('%02x' % (int(first[x], 16) ^ int(last[x], 16)) for x in range(16))
 
 
+def add_round_key(state, key):
+    temp_state = (int(state[x], 16) ^ int(key[x], 16))
+    result = ['%02x' % temp_state for x in range(16)]
+    return result
+
+
+def sub_bytes(state):
+    substitution = sbox[int(state[x], 16)]
+    sub_bytes = ['%02x' % substitution for x in range(16)]
+    return sub_bytes
+    
+
+
 # CBC's Chiper
 def cipher(expanded_key, data):
     print(expand_key, data)
+
+    state = add_round_key(state_matrix(data), expandedKey[0])
+    for r in range(9):
+        state = sub_bytes(state)
+
+        print('\n\n\nState: ', state)
+
 
 
 
