@@ -80,6 +80,32 @@ def expand_key(key):
     return expand_key
 
 
+# XOR function
+def xor(first, last):
+        first = re.findall('.' * 2, first)
+        last = re.findall('.' * 2, last)
+        return ''.join('%02x' % (int(first[x], 16) ^ int(last[x], 16)) for x in range(16))
+
+
+# CBC's Chiper
+def cipher(expanded_key, data):
+    print(expand_key, data)
+
+
+
+#Adds CBC Encriptation
+def cbc_encrypt(data, expanded_key):
+        if type(data) is not list: 
+            data = data.split()
+
+        data_blocks =  data
+
+        [data_blocks.append(cipher(expanded_key, xor(data_blocks[-1], x))) for x in data]
+
+        return data_blocks[1:]
+
+
+
 
 def main():
 
@@ -89,9 +115,6 @@ def main():
     print('Digite a mensagem (em hexa): ', end="")
     plain_text = '0123456789abcdeffedcba9876543210'
 
-    key = 
-
-
 
     print("\n\nMensagem: ", end='')
     print("'" + plain_text + "'\n")
@@ -99,3 +122,5 @@ def main():
 
     expanded_key = expand_key(key)
     print(expanded_key)
+
+    encripted_message = cbc_encrypt(plain_text, expand_key)
