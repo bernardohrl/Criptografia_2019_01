@@ -99,6 +99,43 @@ def sub_bytes(state):
     return sub_bytes
     
 
+def shift_rows(self, state, isInv):
+        """ Changes the State by cyclically shifting the last
+        three rows of the State by different offsets.
+        :param list state: State Matrix
+        :param isInv: Encrypt or Decrypt
+        :return: Shifted state by offsets [0, 1, 2, 3] """
+        offset = 0
+        if isInv: state = re.findall('.' * 2, self.RevertStateMatrix(state))
+        for x in range(0, 16, 4):
+            state[x:x + 4] = state[x:x + 4][offset:] + state[x:x + 4][:offset]
+            if not isInv:
+                offset += 1
+            elif isInv:
+                offset -= 1
+        if isInv: return self.StateMatrix(''.join(state))
+        return state
+
+
+
+def mix_columns(state):
+    fixed = [2, 1, 1, 3]
+    columns = [state[x:x + 4] for x in range(0, 16, 4)]
+    row = [0, 3, 2, 1]
+    col = 0
+    mixed_columns = []
+    for _ in range(4):
+        for _ in range(4):
+            mixed_columns.append('%02x' % (
+                self.galois(int(columns[row[0]][col], 16), fixed[0]) ^
+                self.galois(int(columns[row[1]][col], 16), fixed[1]) ^
+                self.galois(int(columns[row[2]][col], 16), fixed[2]) ^
+                self.galois(int(columns[row[3]][col], 16), fixed[3])))
+            row = [row[-1]] + row[:-1]
+        col += 1
+
+    return mixed_columns
+
 
 # CBC's Chiper
 def cipher(expanded_key, data):
@@ -107,8 +144,12 @@ def cipher(expanded_key, data):
     state = add_round_key(state_matrix(data), expandedKey[0])
     for r in range(9):
         state = sub_bytes(state)
+        state = shift_rows(state)
+        state = state_matrix(''.join(mix_columns(state)))
+        state = add_round_key(state, expandedKey[r + 1])
 
-        print('\n\n\nState: ', state)
+
+    print("\n\n\n State: ", state)
 
 
 
