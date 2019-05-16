@@ -3,10 +3,19 @@
 #include <string.h>
 
 void KSA (unsigned char state[], unsigned char key[], int key_size){
-    printf("%s", key);
-    printf("\n\n");
-    printf("key size: %i", key_size);
-    printf("\n\n");
+    int i=0, j=0, temp=0;
+
+    for (i=0; i < 256; i++){
+        state[i] = i;
+    }
+
+    // Shuffling
+    for (i=0; i < 256; ++i) {
+        j = (j + state[i] + key[i % key_size]) % 256;
+        temp = state[i];
+        state[i] = state[j];
+        state[j] = temp;
+    }
 }
 
 
@@ -21,6 +30,8 @@ int main(){
     int key_size = strlen(key);
 
     KSA(state, key, key_size);
+
+    printf("\n\n%s\n\n", state);
 
     return 0;
 }
