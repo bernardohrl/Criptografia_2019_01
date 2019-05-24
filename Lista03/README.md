@@ -28,3 +28,11 @@ O resutado estará no arquivo **output_salsa.txt**.
 
 <br><br>
 ## Exercício 2
+Para compilar, utilize o comando:
+```
+gcc main.c -o MRA.out -lm
+```
+Para executar, utilize
+```
+./MRA.out
+```
