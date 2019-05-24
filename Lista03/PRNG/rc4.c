@@ -22,7 +22,7 @@ void PRNG(unsigned char state[],int qtd){
     int i=0, j=0, temp=0, k=0;
     unsigned char character;
 
-    FILE *outF = fopen("output.txt", "w");
+    FILE *outF = fopen("output_rc4.txt", "w");
 
     for (k=0; k < qtd; k++)  {
         i = (i + 1) % 256;
@@ -44,7 +44,7 @@ int main(){
     int qtd=0;
 
 
-    printf("Insira uma chave de até 256 bits: ");
+    printf("\n\n\n\n\nInsira uma chave de até 256 bits: ");
     scanf("%s", key);
 
     int key_size = strlen(key);
