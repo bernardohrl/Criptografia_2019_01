@@ -43,12 +43,12 @@ int MRA(long long number,int rounds)
 
     if (number < 2)
     {
-        printf("\n\t%lld é composto\n\n\n", number);
+        printf("\n\n\t%lld é composto\n\n\n", number);
         return 0;
     }
     if (number != 2 && number % 2==0)
     {
-        printf("\n\t%lld é composto\n\n\n", number);
+        printf("\n\n\t%lld é composto\n\n\n", number);
         return 0;
     }
     
@@ -64,27 +64,29 @@ int MRA(long long number,int rounds)
         long long temp = even_number;
         long long randon = rand() % (number - 1) + 1;
         long long mod = modulo(randon, temp, number);
-
         // printf("\n\n\nMod: %lld\n\n\n", mod);
 
         while (temp != number - 1 && mod != 1 && mod != number - 1)
         {
             mod = mulmod(mod, mod, number);
-            
-            printf("\n\n\nMulMod: %lld\n\n\n", mod);
+            // printf("\n\n\nMulMod: %lld\n\n\n", mod)
 
             temp *= 2;
         }
         if (mod != number - 1 && temp % 2 == 0)
         {
-            printf("\n\t%lld é composto\n\n\n", number);
+            printf("\n\n\t%lld é composto\n\n\n", number);
             return 0;
         }
 
     }
 
 
-    printf("\n\t%lld é primo\n\n\n", number);
+    d_rounds = (double) rounds;
+    percentage = (1-(pow(0.25,d_rounds)))*100;
+    // printf("\n\nchance: %f", percentage);
+
+    printf("\n\n\t%lld tem %0.30f\%% de chances ser primo\n\n\n", number, percentage);
     return 0;
 }
 
@@ -95,13 +97,12 @@ int main(){
     int rounds;
 
     printf("\n\n\nDigite o número que deseja saber se é primo: ");
-    // scanf("%lld", &number);
-    number = 7921;
+    scanf("%lld", &number);
+    // number = 7919;
 
     printf("Digite a quantidade de rounds que deseja executar: ");
-    // scanf("%d", &rounds);
-
-    rounds=20;
+    scanf("%d", &rounds);
+    // rounds=20;
 
     MRA(number, rounds);
 
