@@ -22,7 +22,7 @@ void PRNG(unsigned char state[],int qtd){
     int i=0, j=0, temp=0, k=0;
     unsigned char character;
 
-    FILE *outF = fopen("output_rc4.dat", "w");
+    FILE *output_file = fopen("output_rc4.dat", "w");
 
     for (k=0; k < qtd; k++)  {
         i = (i + 1) % 256;
@@ -32,10 +32,12 @@ void PRNG(unsigned char state[],int qtd){
         state[j] = temp;
 
         character = state[(state[i] + state[j]) % 256];
-        fputc(character, outF);
+        fputc(character, output_file);
     }
 
-    fclose(outF);
+    fclose(output_file);
+
+    printf("\n\n\nCheque o resultado no arquivo 'output_rc4.dat'\n\n\n\n");
 }
 
 int main(){

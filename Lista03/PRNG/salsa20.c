@@ -82,6 +82,27 @@ int ascii_to_int (unsigned char c)
 }
 
 
+unsigned int_to_bin(unsigned num) {
+    if (num == 0) return 0;
+    if (num == 1) return 1;
+    return (num % 2) + 10 * int_to_bin(num / 2);
+}
+
+void generate_data(uint32_t array[16]) {
+    char bin[8];
+    FILE *output_file = fopen("output_salsa20.dat", "w");
+
+    for(int i=0; i<16; i++) {
+        int temp = int_to_bin(array[i]);
+        fprintf(output_file, "%d", temp);
+    }
+
+    fclose(output_file);
+
+    printf("\n\n\nCheque o resultado no arquivo 'output_salsa20.dat'\n\n\n\n");
+}
+
+
 
 int main(){
     uint32_t input[16], output[16];
@@ -109,10 +130,11 @@ int main(){
 
     salsa20_block(output, input);
 
-    for (int i = 0; i < 16; ++i) {
-        printf("\noutput[%d] = %d", i, output[i]);
-    }
+    // for (int i = 0; i < 16; ++i) {
+    //     printf("\noutput[%d] = %d", i, output[i]);
+    // }
 
+    generate_data(output);
 
     return 0;
 }
