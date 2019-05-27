@@ -22,7 +22,7 @@ void PRNG(unsigned char state[],int qtd){
     int i=0, j=0, temp=0, k=0;
     unsigned char character;
 
-    FILE *outF = fopen("output_rc4.txt", "w");
+    FILE *outF = fopen("output_rc4.dat", "w");
 
     for (k=0; k < qtd; k++)  {
         i = (i + 1) % 256;
