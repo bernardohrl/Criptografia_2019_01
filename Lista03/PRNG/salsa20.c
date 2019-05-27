@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <limits.h>
 
 #define ROUNDS 20
 
@@ -13,13 +14,13 @@ static uint32_t rotl(uint32_t value, int shift)
  
 void quarter_round(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
     b ^= rotl(a + d, 7);
-    printf("\n\n%ld", b);
+    // printf("\n\n%ld", b);
 	c ^= rotl(b + a, 9);
-    printf("\n%ld", b);
-	d ^= rotl(c + b,13);
-    printf("\n%ld", b);
-	a ^= rotl(d + c,18);
-    printf("\n%ld", b);
+    // printf("\n%ld", b);
+	d ^= rotl(c + b, 13);
+    // printf("\n%ld", b);
+	a ^= rotl(d + c, 18);
+    // printf("\n%ld", b);
 }
 
 void salsa20_block(uint32_t out[16], uint32_t const in[16])
@@ -27,10 +28,9 @@ void salsa20_block(uint32_t out[16], uint32_t const in[16])
 	int i;
 	uint32_t x[16];
 
-    // Faz uma matriz 16x16 com o input
 	for (i = 0; i < 16; ++i) {
 		x[i] = in[i];
-        printf("\nx[%d] = %d", i, x[i]);
+        // printf("\nx[%d] = %d", i, x[i]);
     }
 
     for (i = 0; i < ROUNDS; i += 2) {
@@ -49,7 +49,7 @@ void salsa20_block(uint32_t out[16], uint32_t const in[16])
 
     for (i = 0; i < 16; ++i) {
         out[i] = x[i] + in[i];
-        printf("\nx[%d] = %d", i, out[i]);
+        // printf("\nx[%d] = %d", i, out[i]);
     }
 	
 
@@ -57,20 +57,61 @@ void salsa20_block(uint32_t out[16], uint32_t const in[16])
 }
 
 
+int ascii_to_int (unsigned char c)
+{
+    static char bin[CHAR_BIT + 1] = {0};
+    int r = 0;
+    char *p;
+
+    // Char to Binary
+    for (int i = CHAR_BIT - 1; i >= 0; i--) {
+        bin[i] = (c % 2) + '0';
+        c /= 2;
+    }
+
+
+    // Binary to Int
+    p = bin;
+
+    while (p && *p ) {
+        r <<= 1;
+        r += (unsigned int)((*p++) & 0x01);
+    }
+
+    return (int) r;
+}
+
+
+
 int main(){
-    unsigned char key[256];
-    // unsigned char state[256];
-    // int qtd=0;
+    uint32_t input[16], output[16];
+    unsigned char input_ascii[32];
+    char input_bin[128]= "";
 
 
-    // printf("\n\n\n\n\nInsira uma chave de até 256 bits: ");
-    // scanf("%s", key);
+    // Inicializa matriz de input
+    for(int i=0; i<16; i++)
+        input[i] = 0;
 
-    uint32_t input=11111, output[16];
 
-    salsa20_block(output, &input);
+    printf("\n\n\n\n\nInsira um input de 16 caracteres (128 bits). ");
+    printf("\nDemais caracteres serão ignorados. ");
+    printf("\nInsira: ");
+    scanf("%s", input_ascii);
 
-    printf("\n\n%ld\n\n", output[2]);
+    
+
+    for(int i=0; i<strlen(input_ascii); i++) 
+        input[i] = ascii_to_int(input_ascii[i]);
+    
+    // printf("this: %s", input_bin);
+
+
+    salsa20_block(output, input);
+
+    for (int i = 0; i < 16; ++i) {
+        printf("\noutput[%d] = %d", i, output[i]);
+    }
 
 
     return 0;
